@@ -1,0 +1,300 @@
+<LoginCard@MDCard>:
+    size_hint: None, None
+    size: "300dp", "350dp"  # Card menor para login
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    elevation: 10
+    padding: "20dp"
+    spacing: "15dp"
+    radius: 15
+
+<RegisterCard@MDCard>:
+    size_hint: None, None
+    size: "320dp", "450dp"  # Card maior para cadastro
+    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+    elevation: 10
+    padding: "20dp"
+    spacing: "15dp"
+    radius: 15
+
+<CustomTextField@MDTextField>:
+    size_hint_x: 1
+    pos_hint: {"center_x": 0.5}
+
+<LoginScreen>:
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: app.theme_cls.primary_color if app.theme_cls.theme_style == "Light" else app.theme_cls.primary_dark
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        LoginCard:
+            orientation: "vertical"
+            
+            MDLabel:
+                text: "Bem-vindo"
+                font_style: "H4"
+                halign: "center"
+                size_hint_y: None
+                height: self.texture_size[1]
+                padding_y: "10dp"
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: "15dp"
+                size_hint_y: None
+                height: self.minimum_height
+
+                CustomTextField:
+                    id: username
+                    hint_text: "Usuário"
+                    icon_left: "account"
+                    mode: "rectangle"
+
+                CustomTextField:
+                    id: password
+                    hint_text: "Senha"
+                    icon_left: "lock"
+                    password: True
+                    mode: "rectangle"
+
+            MDRaisedButton:
+                text: "Login"
+                size_hint_x: 1
+                pos_hint: {"center_x": 0.5}
+                on_release: root.try_login()
+                padding: "10dp"
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: "30dp"
+                spacing: "5dp"
+                pos_hint: {"center_x": 0.5}
+
+                MDLabel:
+                    text: "Não tem conta?"
+                    halign: "right"
+                    size_hint_x: 0.6
+                    theme_text_color: "Secondary"
+
+                MDRaisedButton:
+                    text: "Cadastrar"
+                    size_hint_x: 0.4
+                    on_release: root.manager.current = "register"
+                    elevation: 0
+
+<RegisterScreen>:
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: app.theme_cls.primary_color if app.theme_cls.theme_style == "Light" else app.theme_cls.primary_dark
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        RegisterCard:
+            orientation: "vertical"
+            
+
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: "15dp"
+                size_hint_y: None
+                height: self.minimum_height
+
+                CustomTextField:
+                    id: new_username
+                    hint_text: "Nome de usuário"
+                    icon_left: "account"
+                    mode: "rectangle"
+
+                CustomTextField:
+                    id: new_email
+                    hint_text: "Email"
+                    icon_left: "email"
+                    mode: "rectangle"
+
+                CustomTextField:
+                    id: new_password
+                    hint_text: "Senha"
+                    icon_left: "lock"
+                    password: True
+                    mode: "rectangle"
+
+                CustomTextField:
+                    id: confirm_password
+                    hint_text: "Confirmar senha"
+                    icon_left: "lock"
+                    password: True
+                    mode: "rectangle"
+
+            MDRaisedButton:
+                text: "Cadastrar"
+                size_hint_x: 1
+                pos_hint: {"center_x": 0.5}
+                on_release: root.try_register()
+                padding: "10dp"
+
+            MDRaisedButton:
+                text: "Voltar"
+                size_hint_x: 0.4
+                on_release: root.manager.current = "login"
+                elevation: 0
+<HomeScreen>:
+    MDBoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+
+        MDTopAppBar:
+            title: "Casa Inteligente"
+            elevation: 2
+            left_action_items: [["logout", lambda x: root.logout()]]
+            right_action_items: [["cog", lambda x: root.show_settings()]]
+
+        ScrollView:
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: "20dp"
+                padding: ["20dp", "10dp", "20dp", "10dp"]
+                size_hint_y: None
+                height: self.minimum_height
+
+                WeatherCard:
+                    id: weather_card
+                    size_hint_y: None
+                    height: "170dp"
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: "150dp"
+                    spacing: "12dp"
+                    radius: 15
+                    padding: ["20dp", "15dp", "20dp", "15dp"]
+
+                    MDLabel:
+                        text: "Lâmpadas"
+                        font_style: "H6"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        padding: ["0dp", "0dp", "0dp", "5dp"]
+
+                    MDBoxLayout:
+                        spacing: "10dp"
+                        size_hint_y: None
+                        height: "30dp"
+                        padding: ["10dp", "0dp", "10dp", "0dp"]
+
+                        MDLabel:
+                            text: "Estado Manual"
+                            size_hint_x: 0.7
+                            valign: "center"
+
+                        MDSwitch:
+                            id: lamp_manual
+                            active: False
+                            on_active: root.toggle_lamps_manual(self.active)
+                            pos_hint: {"center_y": 0.5}
+                            size_hint_x: None
+                            width: "56dp"
+                        
+                    MDLabel:
+                        id: lamp_status
+                        text: "Status: Lâmpadas DESLIGADAS"
+                        font_style: "Body2"
+                        theme_text_color: "Secondary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        halign: "center"
+                        padding: ["10dp", "5dp", "10dp", "5dp"] 
+
+                MDCard:
+                    orientation: "vertical"
+                    size_hint_y: None
+                    height: "120dp"
+                    spacing: "1dp"
+                    radius: 15
+                    padding: ["20dp", "15dp", "20dp", "15dp"]
+
+                    MDLabel:
+                        text: "Portão"
+                        font_style: "H6"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        padding: ["0dp", "0dp", "0dp", "5dp"]
+
+                    MDBoxLayout:
+                        padding: ["10dp", "0dp", "10dp", "0dp"]
+                        spacing: "20dp"
+                        size_hint_y: None
+                        height: "48dp"
+
+                        MDLabel:
+                            text: "Estado do Portão"
+                            size_hint_x: 0.6
+
+                        MDSwitch:
+                            id: gate_switch
+                            active: True
+                            on_active: root.toggle_gate(self.active)
+                            pos_hint: {"center_y": 0.5}
+                            size_hint_x: None
+                            width: "56dp"
+                    MDLabel:
+                        id: gate_status
+                        text: "Status: Portão FECHADO"
+                        font_style: "Body2"
+                        theme_text_color: "Secondary"
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        halign: "center"
+
+<WeatherCard>:
+    orientation: "vertical"
+    padding: "15dp"
+    spacing: "1dp"
+    radius: 15
+    elevation: 1
+    md_bg_color: app.theme_cls.primary_light if app.theme_cls.theme_style == "Light" else app.theme_cls.primary_dark
+
+    MDBoxLayout:
+        size_hint_y: None
+        height: "30dp"
+        spacing: "10dp"
+
+        MDIcon:
+            icon: root.weather_icon
+            size_hint_x: None
+            width: "30dp"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+
+        MDLabel:
+            text: root.weather_status
+            font_style: "H6"
+            theme_text_color: "Custom"
+            text_color: 1, 1, 1, 1
+            bold: True
+
+    MDLabel:
+        text: root.temperature
+        font_style: "H4"
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
+        halign: "center"
+
+    MDLabel:
+        text: root.rain_info
+        font_style: "Subtitle1"
+        theme_text_color: "Custom"
+        text_color: 1, 1, 1, 1
+        halign: "center"
+
+    MDRaisedButton:
+        text: "Controle Manual das Janelas"
+        size_hint_x: 0.8
+        pos_hint: {"center_x": 0.5}
+        md_bg_color: app.theme_cls.accent_color
+        on_release: root.manual_window_control()
