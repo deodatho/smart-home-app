@@ -52,7 +52,7 @@ Sistema completo de automação residencial desenvolvido com **Python**, **KivyM
 1. **Clone o repositório:**
 
 ```bash
-git clone https://github.com/seu-usuario/smart-home-app.git
+git clone https://github.com/deodatho/smart-home-app.git
 cd smart-home-app
 ```
 
