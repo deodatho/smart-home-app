@@ -1,0 +1,19 @@
+# Ignore buildozer build folder
+.buildozer/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore VS Code configs and secure data
+.vscode/
+secure_data/
+
+# Ignore databases
+*.db
+
+# Ignore APKs
+*.apk
+
